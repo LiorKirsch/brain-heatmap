@@ -3,9 +3,11 @@ function hex = colorTripletToHex(colorArray)
 % a = hot;
 % hex_hot = colorTripletToHex(a);
 %
-% colorArray should be N x 3 array (RBG) - where each element is between
+% colorArray should be N x 3 array (RGB) - where each element is between
 % zero and one.
 
+    assert( size(colorArray,2) == 3, 'colorArray should be N x 3 array (RGB)');
+    
     numElements = size(colorArray,1);
     hex = cell(numElements,1);
 
