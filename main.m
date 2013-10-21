@@ -12,6 +12,15 @@ colorRegions(target_region_acronym, target_region_colors, 'ontology/mouse_ontolo
 % python colorize.py --inputfile mouse_output.csv --svgfile mouse_atlas_svg/mouseSagittal.svg > Mouseoutput.svg
 
 
+
+target_region_acronym = { 'CTX', 'SS','TEa','AUD','OLF','HPF','STR','PAL','TH','HY','MB','CBX'};
+expressionLevel = [ 14,1,4,4.5,3,11,3,8,2.3,6.4,3.4,5.5];
+target_region_colors = mapValuesToColorScale(expressionLevel, hot);
+target_region_colors = colorTripletToHex(target_region_colors);
+colorRegions(target_region_acronym, target_region_colors, 'ontology/mouse_ontology.csv','mouse_output.csv');
+
+
+
 % -------------------------------- Human regions ------------------------------------
 % copy paste the ontology tree from: http://atlas.brain-map.org/atlas?atlas=138322605
 % -----------------------------------------------------------------------------------
