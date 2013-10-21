@@ -11,7 +11,7 @@ def colorSvgFile(svg_file, svg_dir):
     svg = open( join(svg_dir,svg_file) , 'r').read()
         
     # Load into Beautiful Soup
-    soup = bs4.BeautifulSoup(svg, 'xml')
+    soup = bs4.BeautifulSoup(svg, "html.parser")
      
     paths = soup.findAll('path')
     
@@ -23,17 +23,18 @@ def colorSvgFile(svg_file, svg_dir):
         try:
             current_structure_id = p['structure_id']
             color = structure_values[current_structure_id]
+            p['style'] = path_style + "#" + color
         except:
             continue
         
-            p['style'] = path_style + "#" + color
+            
             
     return soup
         
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='create atlas svg files')
-    parser.add_argument('-i' ,'--inputfile',  type=str, default=  'output.csv' )
-    parser.add_argument('-d' ,'--svgdirectory',  type=str, default=  "human_svg" )
+    parser.add_argument('-i' ,'--inputfile',  type=str, default=  'human_output.csv' )
+    parser.add_argument('-d' ,'--svgdirectory',  type=str, default=  "human_atlas_svg" )
     parser.add_argument('-o' ,'--outputfolder',  type=str, default=  "output_folder" )
     parser.add_argument('-f' ,'--svgfile',  type=str, default=  'NO_FILE' )
     

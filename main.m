@@ -1,10 +1,12 @@
-
+%-----------------   Human   ---------------------------
 target_region_acronym = { 'FroL', 'ParL','TemL','OccL','CgG','PHG','HiF','M','CbSS','PnSS','MOSS'};
 target_region_colors = { 'ff0000','f00000','030000','000900','00c000','00ff00','00ff0f','00ffc0','00ffff','0fffff','c0ffff'};
 colorRegions(target_region_acronym, target_region_colors, 'ontology/developing_human.csv', 'human_output.csv');
 
 % python colorize.py --inputfile human_output.csv --outputfolder output_folder --svgdirectory human_atlas_svg
 
+
+%-----------------   Mouse   ---------------------------
 target_region_acronym = { 'CTX', 'SS','TEa','AUD','OLF','HPF','STR','PAL','TH','HY','MB','CBX'};
 target_region_colors = { 'ff0000','f00000','030000','000900','00c000','00ff00','00ff0f','00ffc0','00ffff','0fffff','c0ffff','0f0f0f'};
 colorRegions(target_region_acronym, target_region_colors, 'ontology/mouse_ontology.csv','mouse_output.csv');
@@ -13,12 +15,14 @@ colorRegions(target_region_acronym, target_region_colors, 'ontology/mouse_ontolo
 
 
 
+%-----------------   Mouse expression   ----------------
 target_region_acronym = { 'CTX', 'SS','TEa','AUD','OLF','HPF','STR','PAL','TH','HY','MB','CBX'};
 expressionLevel = [ 14,1,4,4.5,3,11,3,8,2.3,6.4,3.4,5.5];
 target_region_colors = mapValuesToColorScale(expressionLevel, hot);
 target_region_colors = colorTripletToHex(target_region_colors);
 colorRegions(target_region_acronym, target_region_colors, 'ontology/mouse_ontology.csv','mouse_output.csv');
 
+% python colorize.py --inputfile mouse_output.csv --svgfile mouse_atlas_svg/mouseSagittal.svg > Mouseoutput.svg
 
 
 % -------------------------------- Human regions ------------------------------------
