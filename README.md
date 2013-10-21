@@ -1,5 +1,5 @@
-Run main.m (from matlab).
-* Matlab will generate a csv file which hold the region Id and the color of that region in hex.
+Run exampleMain.m (from matlab).
+* Matlab will generate a csv file which hold the region ID and the color of that region in hex.
 
 
 Then run the python script to generate the heatmaps.
