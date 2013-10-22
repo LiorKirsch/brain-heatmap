@@ -3,7 +3,7 @@ target_region_acronym = { 'FroL', 'ParL','TemL','OccL','CgG','PHG','HiF','M','Cb
 target_region_colors = { 'ff0000','f00000','030000','000900','00c000','00ff00','00ff0f','00ffc0','00ffff','0fffff','c0ffff'};
 colorRegions(target_region_acronym, target_region_colors, 'ontology/developing_human.csv', 'human_output.csv');
 
-% python colorize.py --inputfile human_output.csv --outputfolder output_folder --svgdirectory human_atlas_svg
+% python2.7 colorize.py --inputfile human_output.csv --outputfolder output_folder --svgdirectory human_atlas_svg
 
 
 %-----------------   Mouse   ---------------------------
@@ -11,8 +11,8 @@ target_region_acronym = { 'CTX', 'SS','TEa','AUD','OLF','HPF','STR','PAL','TH','
 target_region_colors = { 'ff0000','f00000','030000','000900','00c000','00ff00','00ff0f','00ffc0','00ffff','0fffff','c0ffff','0f0f0f'};
 colorRegions(target_region_acronym, target_region_colors, 'ontology/mouse.csv','mouse_output.csv');
 
-% python colorize.py --inputfile mouse_output.csv --svgfile mouse_atlas_svg/mouseSagittal.svg > Mouseoutput.svg
-% python colorize.py --inputfile mouse_output.csv --svgdirectory mouse_atlas_svg --outputfolder output_folder
+% python2.7 colorize.py --inputfile mouse_output.csv --svgfile mouse_atlas_svg/mouseSagittal.svg > Mouseoutput.svg
+% python2.7 colorize.py --inputfile mouse_output.csv --svgdirectory mouse_atlas_svg --outputfolder output_folder
 
 
 
@@ -23,8 +23,8 @@ target_region_colors = mapValuesToColorScale(expressionLevel, hot);
 target_region_colors = colorTripletToHex(target_region_colors);
 colorRegions(target_region_acronym, target_region_colors, 'ontology/mouse.csv','mouse_output.csv');
 
-% python colorize.py --inputfile mouse_output.csv --svgfile mouse_atlas_svg/mouseSagittal.svg > Mouseoutput.svg
-% python colorize.py --inputfile mouse_output.csv --svgdirectory mouse_atlas_svg --outputfolder output_folder
+% python2.7 colorize.py --inputfile mouse_output.csv --svgfile mouse_atlas_svg/mouseSagittal.svg > Mouseoutput.svg
+% python2.7 colorize.py --inputfile mouse_output.csv --svgdirectory mouse_atlas_svg --outputfolder output_folder
 
 
 % -------------------------------- Human regions ------------------------------------
