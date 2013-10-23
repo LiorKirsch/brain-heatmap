@@ -20,6 +20,6 @@ function hex = rgb2hex( rgb)
 
     rgb = rgb*255;
     hex1 = dec2hex(floor(rgb/16));
-    hex2 = dec2hex(mod(rgb,16)*16);
+    hex2 = dec2hex(floor(mod(rgb,16)*16));
     hex = [hex1(1),hex2(1),hex1(2),hex2(2),hex1(3),hex2(3)];
 end
