@@ -5,7 +5,7 @@ You can use this script and fit it to your needs.
 
 Then run the python (tested on python2.7) script to generate the heatmaps.
 * The python script will load the colors from the csv file. 
-* Then it will modify the svg atlas images and save the new images to the output folder.
+* Then it will modify the atlas svg-images and save the new images to the output folder.
 
 
 If you enconter problems while running the python script try install beautiful soup

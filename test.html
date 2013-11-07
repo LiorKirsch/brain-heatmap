@@ -1,0 +1,102 @@
+<html>
+<head>
+	<script>
+		function setColor(color)
+		{
+			var	svgContainer = document.getElementById("svgDrawing");
+			var aaa = getElementByAttribute('structure_id','299',svgContainer);
+			aaa.style.fill = color;
+		}
+
+		function getMinMax(data)
+		{
+			var minValue = NaN;
+			var maxValue = NaN;
+			var currentValue,numberValue;		
+				
+			for (var i=0; i< data.feed.entry.length; i++  ) 
+			{
+				console.log(i);
+				currentValue = data.feed.entry[i]['gsx$value']['$t'];
+				if (!(currentValue == '' ))				{
+					numberValue = parseFloat(currentValue);
+					if (isNaN(minValue)) {
+						minValue = numberValue;
+						}
+					else {
+						if (minValue > numberValue) {
+							minValue = numberValue;
+							}
+					};
+
+					if (isNaN(maxValue)) {
+						maxValue = numberValue;
+						}
+					else {
+						if (maxValue < numberValue) {
+							maxValue = numberValue;
+							}
+					};
+				}
+			}
+
+			return [minValue, maxValue]; 
+		}
+		function getElementByAttribute(attr, value, root) {
+			root = root || document.body;
+			if (root.attributes) {
+				if(root.hasAttribute(attr) && root.getAttribute(attr) == value) {
+					return root;
+				}
+			}
+			else {
+					return null;
+			}
+	
+			var children = root.childNodes, 
+				element;
+			for(var i = children.length; i--; ) {
+				element = getElementByAttribute(attr, value, children[i]);
+				if(element) {
+				    return element;
+				}
+			}
+			return null;
+		}
+
+    </script>
+</head>
+<body>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+    <button onclick="setColor('red');">Red</button>
+    <button onclick="setColor('green');">Green</button>
+    <button onclick="setColor('blue');">Blue</button>
+    
+<div id="page_div"></div>
+
+
+<script>
+
+ $(document).ready(function()
+    {
+        $.get("./Mouseoutput.svg", null,
+            function(data)
+        {
+	    var svgNode = $("svg", data);
+		svgNode.attr('id', "svgDrawing");
+	    var docNode = document.adoptNode(svgNode[0]);
+	    var pageNode = $("#page_div");
+
+	    pageNode.html(docNode);
+        },
+        'xml');
+
+		$.getJSON("http://cors.io/spreadsheets.google.com/feeds/list/0AiPUAyOtb4cHdDlrT0x6bDVHUmJfNmxrLXJfelYxRUE/od6/public/values?alt=json", function(data) {
+		  //first row "title" column
+		  console.log(data.feed.entry[3]['gsx$name']['$t']);
+		  minmax = getMinMax(data);
+		});
+    })	;
+</script>
+</body>
