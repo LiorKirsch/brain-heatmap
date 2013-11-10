@@ -142,7 +142,7 @@
 		}
 
 		function redirectToPage(location, spreadsheetkey) {
-			window.location.replace("?spreadsheetkey=" + spreadsheetkey+ "&location=" +location);
+			window.location.replace("test.html?spreadsheetkey=" + spreadsheetkey+ "&location=" +location);
 		}
 
 		function encode_as_img_and_link(){
