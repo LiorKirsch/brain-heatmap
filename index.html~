@@ -40,7 +40,7 @@
 		redirectionNeeded = true;
 	}
 
-	if ( redirectionNeeded ) { redirectToPage(location, spreadsheetkey);} 
+	if ( redirectionNeeded ) { redirectToPage(location, spreadsheetkey, ontology);} 
 
 	var currentLocationBox = $("#currentLocation");
 	currentLocationBox.attr("placeholder", location);

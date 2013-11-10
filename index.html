@@ -45,7 +45,7 @@
 	var currentLocationBox = $("#currentLocation");
 	currentLocationBox.attr("placeholder", location);
 
-	var fileName = "mouse_atlas_svg/" + "mouse_" + location + ".svg";
+	var fileName = ontology + "atlas_svg/" + location + ".svg";
         $.get(fileName, null,
             function(data)
         {
@@ -61,19 +61,21 @@
 		spreadsheetkey = "0AiPUAyOtb4cHdFN5d2VrMC15VTdHakl3VkNleWNacXc";
 		redirectToPage(location, spreadsheetkey);
 	}
-		 $.getJSON("ontology/mouse.json", function(ontologyData) {		
-			getStructureColor(ontologyData, {}, default_color);
+	
+	ontologyFile = "ontology/" + ontology + ".json";
+	 $.getJSON(ontologyFile, function(ontologyData) {		
+		getStructureColor(ontologyData, {}, default_color);
 
-			$.getJSON("http://cors.io/spreadsheets.google.com/feeds/list/" + spreadsheetkey + "/od6/public/values?alt=json", function(data) {
+		$.getJSON("http://cors.io/spreadsheets.google.com/feeds/list/" + spreadsheetkey + "/od6/public/values?alt=json", function(data) {
 
-			  var valuesAndMinMax = getValuesAndMinMax(data);
-			  var colorDict = translateNumberToColor(valuesAndMinMax.valuesDict, valuesAndMinMax.minValue,valuesAndMinMax.maxValue,colormap);
-  			  getStructureColor(ontologyData, colorDict, default_color);
-			  $('#loader').hide();
-			  encode_as_img_and_link();
-			});
-			
-		  });		
+		  var valuesAndMinMax = getValuesAndMinMax(data);
+		  var colorDict = translateNumberToColor(valuesAndMinMax.valuesDict, valuesAndMinMax.minValue,valuesAndMinMax.maxValue,colormap);
+		  getStructureColor(ontologyData, colorDict, default_color);
+		  $('#loader').hide();
+		  encode_as_img_and_link();
+		});
+		
+	  });		
     })	;
 </script>
 </body>
