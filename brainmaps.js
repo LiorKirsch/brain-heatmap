@@ -138,8 +138,8 @@
 			redirectToPage(location, spreadsheetkey);
 		}
 
-		function redirectToPage(location, spreadsheetkey) {
-			window.location.replace("?spreadsheetkey=" + spreadsheetkey+ "&location=" +location);
+		function redirectToPage(location, spreadsheetkey,ontology) {
+			window.location.replace("?spreadsheetkey=" + spreadsheetkey+ "&location="  +location + "&ontology=" + ontology);
 		}
 
 		function encode_as_img_and_link(){

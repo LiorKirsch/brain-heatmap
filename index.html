@@ -24,10 +24,23 @@
 	var colormap = heatcolormap;
 	var location = getURLParameter('location');
 	var spreadsheetkey = getURLParameter('spreadsheetkey');
+	var ontology = getURLParameter('ontology');
+	var redirectionNeeded = false;
 	if ( "null" == location) {
 		location = "1";
-		redirectToPage(location, spreadsheetkey);
+		redirectionNeeded = true;
 	}
+
+	if ( "null" == spreadsheetkey) {
+		spreadsheetkey = "0AiPUAyOtb4cHdFN5d2VrMC15VTdHakl3VkNleWNacXc";
+		redirectionNeeded = true;
+	}
+	if ( "null" == ontology) {
+		ontology = "mouse";
+		redirectionNeeded = true;
+	}
+
+	if ( redirectionNeeded ) { redirectToPage(location, spreadsheetkey, ontology);} 
 
 	var currentLocationBox = $("#currentLocation");
 	currentLocationBox.attr("placeholder", location);
