@@ -1,0 +1,3 @@
+to replace all the fill colors to the same color use:
+
+sed -i 's/fill:......./fill:\#f2f1f0/g' *.svg

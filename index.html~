@@ -62,7 +62,7 @@
 			var minValue = NaN;
 			var maxValue = NaN;
 			var valuesDict = {};
-			var currentValue,numberValue;		
+			var currentValue,currentStructID,numberValue;		
 				
 			for (var i=0; i< data.length; i++  ) 
 			{
