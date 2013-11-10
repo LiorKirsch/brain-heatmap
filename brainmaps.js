@@ -121,21 +121,23 @@
 			var location = getURLParameter('location');
 			location = parseFloat(location);
 			var spreadsheetkey = getURLParameter('spreadsheetkey');
+			var ontology = getURLParameter('ontology');
 			location = location + numberOfImages;
 			if (location < 1) {
 				location = 1;
 			}
-			redirectToPage(location, spreadsheetkey);
+			redirectToPage(location, spreadsheetkey,ontology);
 		}
 
 		function goToSlice() {
 			var location = $('#currentLocation').val();
 			location = parseFloat(location);
 			var spreadsheetkey = getURLParameter('spreadsheetkey');
+			var ontology = getURLParameter('ontology');
 			if (location < 1) {
 				location = 1;
 			}
-			redirectToPage(location, spreadsheetkey);
+			redirectToPage(location, spreadsheetkey, ontology);
 		}
 
 		function redirectToPage(location, spreadsheetkey,ontology) {
