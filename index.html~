@@ -7,7 +7,7 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <div id="buttonsAndStuff" >
 	    <button onclick="changeSlice(-1);"> &lArr; </button>
-	    <input type="text" id="currentLocation" size="3" > </input>
+	    <input type="text" id="currentLocation" style="width: 25px;" > </input> <span id="totalImageCount"> </span>
 	    <button onclick="changeSlice(1);"> &rArr; </button>
 	    <button onclick="goToSlice();">Go</button>
 	    <img src="ajax-loader.gif" id="loader"> 
@@ -43,8 +43,9 @@
 	if ( redirectionNeeded ) { redirectToPage(location, spreadsheetkey, ontology);} 
 
 	var currentLocationBox = $("#currentLocation");
-	currentLocationBox.attr("placeholder", location);
+	currentLocationBox.val(location);
 
+	var atlasFile="atlas.json";
     $.getJSON(atlasFile, function(atlasesData) {
 		var atlasData ;
 		for (var i=0; i< atlasesData.length; i++  ) 
@@ -53,6 +54,7 @@
 		    }
 
 		var numberOfImages = atlasData["images"].length;
+		$('#totalImageCount').html('/ ' + numberOfImages);
 
 		var fileName = atlasData["directory"] + "/" + location + ".svg";
 		$.get(fileName, null, function(data){
@@ -73,7 +75,7 @@
 			  var colorDict = translateNumberToColor(valuesAndMinMax.valuesDict, valuesAndMinMax.minValue,valuesAndMinMax.maxValue,colormap);
 			  getStructureColor(ontologyData, colorDict, default_color);
 			  $('#loader').hide();
-			  encode_as_img_and_link();
+			  encode_as_img_and_link(atlasData);
 			});
 		
 		  });
