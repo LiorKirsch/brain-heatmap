@@ -45,6 +45,7 @@
 	var currentLocationBox = $("#currentLocation");
 	currentLocationBox.attr("placeholder", location);
 
+	var atlasFile="atlas.json";
     $.getJSON(atlasFile, function(atlasesData) {
 		var atlasData ;
 		for (var i=0; i< atlasesData.length; i++  ) 
