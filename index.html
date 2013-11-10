@@ -62,12 +62,12 @@
 			var minValue = NaN;
 			var maxValue = NaN;
 			var valuesDict = {};
-			var currentValue,numberValue;		
+			var currentValue,currentStructID,numberValue;		
 				
-			for (var i=0; i< data.feed.entry.length; i++  ) 
+			for (var i=0; i< data.length; i++  ) 
 			{
-				currentValue = data.feed.entry[i]['gsx$value']['$t'];
-				currentStructID = data.feed.entry[i]['gsx$id']['$t'];
+				currentValue = data[i]['value'];
+				currentStructID = data[i]['id'];
 				if (!(currentValue == '' ))				{
 					valuesDict[currentStructID] = currentValue;
 					numberValue = parseFloat(currentValue);
@@ -158,6 +158,7 @@
 		}
     </script>
 <script type="text/javascript" src="webtoolkit.base64.js"></script>
+<script type="text/javascript" src="tabletop.js"></script>
 </head>
 <body>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -207,15 +208,16 @@
 		 $.getJSON("ontology/mouse.json", function(ontologyData) {		
 			getStructureColor(ontologyData, {}, default_color);
 
-			$.getJSON("http://cors.io/spreadsheets.google.com/feeds/list/" + spreadsheetkey + "/od6/public/values?alt=json", function(data) {
 
-			  var valuesAndMinMax = getValuesAndMinMax(data);
-			  var colorDict = translateNumberToColor(valuesAndMinMax.valuesDict, valuesAndMinMax.minValue,valuesAndMinMax.maxValue,colormap);
-  			  getStructureColor(ontologyData, colorDict, default_color);
-			  $('#loader').hide();
-			  encode_as_img_and_link();
-			});
-			
+		 Tabletop.init( { key: spreadsheetkey,
+				   callback: function(data, tabletop) {
+					  var valuesAndMinMax = getValuesAndMinMax(data);
+					  var colorDict = translateNumberToColor(valuesAndMinMax.valuesDict, valuesAndMinMax.minValue,valuesAndMinMax.maxValue,colormap);
+		  			  getStructureColor(ontologyData, colorDict, default_color);
+					  $('#loader').hide();
+					  encode_as_img_and_link();
+				   },
+				   simpleSheet: true } );
 		  });		
     })	;
 </script>
