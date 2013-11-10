@@ -55,7 +55,7 @@
 		var numberOfImages = atlasData["images"].length;
 
 		var fileName = atlasData["directory"] + "/" + location + ".svg";
-		$.get(fileName, null, function(data)		{
+		$.get(fileName, null, function(data){
 			var svgNode = $("svg", data);
 			svgNode.attr('id', "svgDrawing");
 			var docNode = document.adoptNode(svgNode[0]);
