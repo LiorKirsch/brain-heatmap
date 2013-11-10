@@ -1,6 +1,3 @@
-<html>
-<head>
-	<script>
 
 		function getURLParameter(name) {
 		    return decodeURI(
@@ -156,67 +153,3 @@
 			 // Works in Firefox 3.6 and Webit and possibly any browser which supports the data-uri
 			 $("#buttonsAndStuff").append($("<a href-lang='image/svg+xml' href='data:image/svg+xml;base64,\n"+b64+"' title='file.svg' download='image" + location + ".svg'>Download</a>"));
 		}
-    </script>
-<script type="text/javascript" src="webtoolkit.base64.js"></script>
-</head>
-<body>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <div id="buttonsAndStuff" >
-	    <button onclick="changeSlice(-1);"> &lArr; </button>
-	    <input type="text" id="currentLocation" size="3" > </input>
-	    <button onclick="changeSlice(1);"> &rArr; </button>
-	    <button onclick="goToSlice();">Go</button>
-	    <img src="ajax-loader.gif" id="loader"> 
-    </div>
-<div id="page_div"></div>
-
-
-<script>
-
- $(document).ready(function()
-    {
-	var default_color = '#f2f1f0';
-	var heatcolormap = ['6A0000','740000','7F0000','8A0000','940000','9F0000','AA0000','B40000','BF0000','C90000','D40000','DF0000','E90000','F40000','FF0000','FF0A00','FF1500','FF1F00','FF2A00','FF3500','FF3F00','FF4A00','FF5500','FF5F00','FF6A00','FF7400','FF7F00','FF8A00','FF9400','FF9F00','FAA00','FFB400','FFBF00','FFC900','FFD400','FFDF00','FFE900','FFF400','FFFF00','FFFF0F','FFFF1F','FFFF2F','FFFF3F','FFFF4F','FFFF5F','FFFF6F','FFFF7F','FFFF8F','FFFF9F','FFFFAF','FFFFBF','FFFFCF','FFFFDF'];
-	var colormap = heatcolormap;
-	var location = getURLParameter('location');
-	var spreadsheetkey = getURLParameter('spreadsheetkey');
-	if ( "null" == location) {
-		location = "1";
-		redirectToPage(location, spreadsheetkey);
-	}
-
-	var currentLocationBox = $("#currentLocation");
-	currentLocationBox.attr("placeholder", location);
-
-	var fileName = "mouse_atlas_svg/" + "mouse_" + location + ".svg";
-        $.get(fileName, null,
-            function(data)
-        {
-	    var svgNode = $("svg", data);
-		svgNode.attr('id', "svgDrawing");
-	    var docNode = document.adoptNode(svgNode[0]);
-	    var pageNode = $("#page_div");
-
-	    pageNode.html(docNode);
-        },
-        'xml');
-	if ( "null" == spreadsheetkey) {
-		spreadsheetkey = "0AiPUAyOtb4cHdFN5d2VrMC15VTdHakl3VkNleWNacXc";
-		redirectToPage(location, spreadsheetkey);
-	}
-		 $.getJSON("ontology/mouse.json", function(ontologyData) {		
-			getStructureColor(ontologyData, {}, default_color);
-
-			$.getJSON("http://cors.io/spreadsheets.google.com/feeds/list/" + spreadsheetkey + "/od6/public/values?alt=json", function(data) {
-
-			  var valuesAndMinMax = getValuesAndMinMax(data);
-			  var colorDict = translateNumberToColor(valuesAndMinMax.valuesDict, valuesAndMinMax.minValue,valuesAndMinMax.maxValue,colormap);
-  			  getStructureColor(ontologyData, colorDict, default_color);
-			  $('#loader').hide();
-			  encode_as_img_and_link();
-			});
-			
-		  });		
-    })	;
-</script>
-</body>
