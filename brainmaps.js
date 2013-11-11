@@ -122,11 +122,13 @@
 			location = parseFloat(location);
 			var spreadsheetkey = getURLParameter('spreadsheetkey');
 			var ontology = getURLParameter('ontology');
+			var minValue = getURLParameter('min');
+			var maxValue = getURLParameter('max');
 			location = location + numberOfImages;
 			if (location < 1) {
 				location = 1;
 			}
-			redirectToPage(location, spreadsheetkey,ontology);
+			redirectToPage(location, spreadsheetkey,ontology, minValue, maxValue);
 		}
 
 		function goToSlice() {
@@ -134,14 +136,16 @@
 			location = parseFloat(location);
 			var spreadsheetkey = getURLParameter('spreadsheetkey');
 			var ontology = getURLParameter('ontology');
+			var minValue = getURLParameter('min');
+			var maxValue = getURLParameter('max');
 			if (location < 1) {
 				location = 1;
 			}
-			redirectToPage(location, spreadsheetkey, ontology);
+			redirectToPage(location, spreadsheetkey, ontology, minValue, maxValue);
 		}
 
-		function redirectToPage(location, spreadsheetkey,ontology) {
-			window.location.replace("?spreadsheetkey=" + spreadsheetkey+ "&location="  +location + "&ontology=" + ontology);
+		function redirectToPage(location, spreadsheetkey,ontology, minValue, maxValue) {
+			window.location.replace("?location="  +location + "&ontology=" + ontology + "&spreadsheetkey=" + spreadsheetkey +"&min=" + minValue +"&max=" + maxValue);
 		}
 
 		function encode_as_img_and_link(atlasData){
@@ -155,4 +159,19 @@
 
 			 // Works in Firefox 3.6 and Webit and possibly any browser which supports the data-uri
 			 $("#buttonsAndStuff").append($("<a href-lang='image/svg+xml' href='data:image/svg+xml;base64,\n"+b64+"' title='file.svg' download='" + atlasName + "-" + location + ".svg'>Download</a>"));
+		}
+
+		function drawColorbar(width, height, colorbarValues, minValue, maxValue) {
+			var html = '<svg width="' + (width + 80) + '" height="' + height + '" > <g>';
+			var rectHeight = height / colorbarValues.length;
+			var rectWidth = width;
+			for (var i=0 ; i < colorbarValues.length ; i++  ) {
+			 html = html + ' \n<rect style="fill:#' + colorbarValues[colorbarValues.length -1 - i] + ';fill-rule:evenodd;stroke:#000000;stroke-width:0px;stroke-opacity:0"'
+				   + ' id="rect' + i + '" width="' + rectWidth +'" height="' + rectHeight + '" x="0" y="' + i*rectHeight +'" />' ;
+			}
+
+			html = html + '<text x="' + (width +10) + '" y="' + 3*rectHeight + '" font-family="sans-serif" font-size="15px" fill="black">' + maxValue + '</text>' ;
+			html = html + '<text x="' + (width +10) + '" y="' + height + '" font-family="sans-serif" font-size="15px" fill="black">' + minValue + '</text>' ;
+			html = html + '</g> </svg>';
+			return html;
 		}

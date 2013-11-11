@@ -12,7 +12,8 @@
 	    <button onclick="goToSlice();">Go</button>
 	    <img src="ajax-loader.gif" id="loader"> 
     </div>
-<div id="page_div"></div>
+<div id="colorbar_div" style="width:60px; float:left;"></div>
+<div id="page_div" style="margin-left:60px;"></div>
 
 
 <script>
@@ -20,27 +21,19 @@
  $(document).ready(function()
     {
 	var default_color = '#f2f1f0';
-	var heatcolormap = ['6A0000','740000','7F0000','8A0000','940000','9F0000','AA0000','B40000','BF0000','C90000','D40000','DF0000','E90000','F40000','FF0000','FF0A00','FF1500','FF1F00','FF2A00','FF3500','FF3F00','FF4A00','FF5500','FF5F00','FF6A00','FF7400','FF7F00','FF8A00','FF9400','FF9F00','FAA00','FFB400','FFBF00','FFC900','FFD400','FFDF00','FFE900','FFF400','FFFF00','FFFF0F','FFFF1F','FFFF2F','FFFF3F','FFFF4F','FFFF5F','FFFF6F','FFFF7F','FFFF8F','FFFF9F','FFFFAF','FFFFBF','FFFFCF','FFFFDF'];
+	var heatcolormap = ['6A0000','740000','7F0000','8A0000','940000','9F0000','AA0000','B40000','BF0000','C90000','D40000','DF0000','E90000','F40000','FF0000','FF0A00','FF1500','FF1F00','FF2A00','FF3500','FF3F00','FF4A00','FF5500','FF5F00','FF6A00','FF7400','FF7F00','FF8A00','FF9400','FF9F00','FFAA00','FFB400','FFBF00','FFC900','FFD400','FFDF00','FFE900','FFF400','FFFF00','FFFF0F','FFFF1F','FFFF2F','FFFF3F','FFFF4F','FFFF5F','FFFF6F','FFFF7F','FFFF8F','FFFF9F','FFFFAF','FFFFBF','FFFFCF','FFFFDF'];
 	var colormap = heatcolormap;
 	var location = getURLParameter('location');
 	var spreadsheetkey = getURLParameter('spreadsheetkey');
 	var ontology = getURLParameter('ontology');
+	var minValue = getURLParameter('min');
+	var maxValue = getURLParameter('max');
+
 	var redirectionNeeded = false;
-	if ( "null" == location) {
-		location = "1";
-		redirectionNeeded = true;
-	}
-
-	if ( "null" == spreadsheetkey) {
-		spreadsheetkey = "0AiPUAyOtb4cHdFN5d2VrMC15VTdHakl3VkNleWNacXc";
-		redirectionNeeded = true;
-	}
-	if ( "null" == ontology) {
-		ontology = "mouse";
-		redirectionNeeded = true;
-	}
-
-	if ( redirectionNeeded ) { redirectToPage(location, spreadsheetkey, ontology);} 
+	if ( "null" == location)       { redirectionNeeded = true; location = "1"; 	}
+	if ( "null" == spreadsheetkey) { redirectionNeeded = true; spreadsheetkey = "0AiPUAyOtb4cHdFN5d2VrMC15VTdHakl3VkNleWNacXc";	}
+	if ( "null" == ontology)       { redirectionNeeded = true; ontology = "mouse";	}
+	if ( redirectionNeeded ) { redirectToPage(location, spreadsheetkey, ontology,minValue, maxValue);} 
 
 	var currentLocationBox = $("#currentLocation");
 	currentLocationBox.val(location);
@@ -72,6 +65,8 @@
 			$.getJSON("http://cors.io/spreadsheets.google.com/feeds/list/" + spreadsheetkey + "/od6/public/values?alt=json", function(data) {
 
 			  var valuesAndMinMax = getValuesAndMinMax(data);
+			  if ( "null" != getURLParameter('min') ) { valuesAndMinMax;
+			  $("#colorbar_div").html( drawColorbar(20, 200, heatcolormap, valuesAndMinMax.minValue , valuesAndMinMax.maxValue) ) ;
 			  var colorDict = translateNumberToColor(valuesAndMinMax.valuesDict, valuesAndMinMax.minValue,valuesAndMinMax.maxValue,colormap);
 			  getStructureColor(ontologyData, colorDict, default_color);
 			  $('#loader').hide();
