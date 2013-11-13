@@ -1,0 +1,81 @@
+<html>
+<head>
+<script type="text/javascript" src="brainmaps.js"></script>
+<script type="text/javascript" src="webtoolkit.base64.js"></script>
+ <title>Brain heatmap</title>
+</head>
+<body>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <div id="buttonsAndStuff" >
+	    <button onclick="changeSlice(-1);"> &lArr; </button>
+	    <input type="text" id="currentLocation" style="width: 25px;" > </input> <span id="totalImageCount"> </span>
+	    <button onclick="changeSlice(1);"> &rArr; </button>
+	    <button onclick="goToSlice();">Go</button>
+	    <img src="ajax-loader.gif" id="loader"> 
+    </div>
+<div id="colorbar_div" style="width:60px; float:left;margin-top:20px;"></div>
+<div id="page_div" style="margin-left:60px;margin-top:20px;"></div>
+
+
+<script>
+
+ $(document).ready(function()
+    {
+	var default_color = '#f2f1f0';
+	var heatcolormap = ['6A0000','740000','7F0000','8A0000','940000','9F0000','AA0000','B40000','BF0000','C90000','D40000','DF0000','E90000','F40000','FF0000','FF0A00','FF1500','FF1F00','FF2A00','FF3500','FF3F00','FF4A00','FF5500','FF5F00','FF6A00','FF7400','FF7F00','FF8A00','FF9400','FF9F00','FFAA00','FFB400','FFBF00','FFC900','FFD400','FFDF00','FFE900','FFF400','FFFF00','FFFF0F','FFFF1F','FFFF2F','FFFF3F','FFFF4F','FFFF5F','FFFF6F','FFFF7F','FFFF8F','FFFF9F','FFFFAF','FFFFBF','FFFFCF','FFFFDF'];
+	var colormap = heatcolormap;
+	var location = getURLParameter('location');
+	var spreadsheetkey = getURLParameter('spreadsheetkey');
+	var ontology = getURLParameter('ontology');
+	var minValue = getURLParameter('min');
+	var maxValue = getURLParameter('max');
+
+	var redirectionNeeded = false;
+	if ( "null" == location)       { redirectionNeeded = true; location = "20"; 	}
+	if ( "null" == spreadsheetkey) { redirectionNeeded = true; spreadsheetkey = "0AiPUAyOtb4cHdFN5d2VrMC15VTdHakl3VkNleWNacXc";	}
+	if ( "null" == ontology)       { redirectionNeeded = true; ontology = "mouse";	}
+	if ( redirectionNeeded ) { redirectToPage(location, spreadsheetkey, ontology,minValue, maxValue);} 
+
+	$("#currentLocation").val(location);
+
+	var atlasFile="atlas.json";
+    $.getJSON(atlasFile, function(atlasesData) {
+		var atlasData ;
+		for (var i=0; i< atlasesData.length; i++  ) 
+			{ 
+				if (atlasesData[i]["atlas"] == ontology) { atlasData = atlasesData[i]; }
+		    }
+
+		var numberOfImages = atlasData["images"].length;
+		$('#totalImageCount').html('/ ' + numberOfImages);
+
+		var fileName = atlasData["directory"] + "/" + location + ".svg";
+		$.get(fileName, null, function(data){
+			var svgNode = $("svg", data);
+			svgNode.attr('id', "svgDrawing");
+			var docNode = document.adoptNode(svgNode[0]);
+			var pageNode = $("#page_div");
+			pageNode.html(docNode);
+		    },'xml');
+		
+		ontologyFile = "ontology/" + ontology + ".json";
+		 $.getJSON(ontologyFile, function(ontologyData) {		
+			//getStructureColor(ontologyData, {}, default_color);
+
+			$.getJSON("http://cors.io/spreadsheets.google.com/feeds/list/" + spreadsheetkey + "/od6/public/values?alt=json", function(data) {
+
+			  var valuesAndMinMax = getValuesAndMinMax(data);
+			  if ( "null" != minValue ) { valuesAndMinMax.minValue = minValue ; }
+			  if ( "null" != maxValue ) { valuesAndMinMax.maxValue = maxValue ; }
+			  $("#colorbar_div").html( drawColorbar(20, 200, heatcolormap, valuesAndMinMax.minValue , valuesAndMinMax.maxValue) ) ;
+			  var colorDict = translateNumberToColor(valuesAndMinMax.valuesDict, valuesAndMinMax.minValue,valuesAndMinMax.maxValue,colormap);
+			  getStructureColor(ontologyData, colorDict, default_color);
+			  $('#loader').hide();
+			  encode_as_img_and_link(atlasData);
+			});
+		
+		  });
+      });		
+    })	;
+</script>
+</body>

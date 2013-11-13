@@ -5,12 +5,13 @@
 		    );
 		}
 
-		function setColor(structure_id, color)
+		function setColor(structure_id, color,showOutline)
 		{
 			var	svgContainer = document.getElementById("svgDrawing");
 			var svgElement = getElementByAttribute('structure_id',structure_id,svgContainer);
 			if (!(svgElement == null)) {
 				svgElement.style.fill = color; 
+				if (!showOutline) { svgElement.style.stroke = "#f2f1f0";}
 			}
 		}
 
@@ -20,11 +21,12 @@
 			var currentStructID,parentStructID,currentValue,parentValue;
 			currentStructID = data[0]['id'];
 			valuesDict[currentStructID] = default_color;
-
+			var showOutline = true;
 			for (var i=1; i< data.length; i++  ) 
 			{
 				currentStructID = data[i]['id'];
 				parentStructID = data[i]['parent_structure_id'];
+				showOutline = true;
 				if ( !(currentStructID in valuesDict) ){
   				   parentValue = valuesDict[parentStructID];
 				   if (parentValue == null) {
@@ -32,9 +34,10 @@
 				      }
 			           else {
 				      valuesDict[currentStructID] = parentValue;
+					  if ( !(default_color == parentValue)) {showOutline = false;}
 				      }
 				   }
-				setColor(currentStructID, valuesDict[currentStructID] );
+				setColor(currentStructID, valuesDict[currentStructID] ,showOutline);
 			}
 		}
 
@@ -170,7 +173,13 @@
 				   + ' id="rect' + i + '" width="' + rectWidth +'" height="' + rectHeight + '" x="0" y="' + i*rectHeight +'" />' ;
 			}
 
-			html = html + '<text x="' + (width +10) + '" y="' + 3*rectHeight + '" font-family="sans-serif" font-size="15px" fill="black">' + maxValue + '</text>' ;
+			/*
+			for (var j=0 ; j <= 5 ; j++  ) {
+			    html = html + '<text x="' + (width +10) + '" y="' + (3*rectHeight + j* (height -3*rectHeight)/5) + '" font-family="sans-serif" font-size="15px" fill="black">' + (maxValue - j/5*(maxValue -minValue) ).toFixed(2) + '</text>' ;
+			}
+			*/
+
+			html = html + '<text x="' + (width +10) + '" y="' + 3*rectHeight  + '" font-family="sans-serif" font-size="15px" fill="black">' + maxValue + '</text>' ;
 			html = html + '<text x="' + (width +10) + '" y="' + height + '" font-family="sans-serif" font-size="15px" fill="black">' + minValue + '</text>' ;
 			html = html + '</g> </svg>';
 			return html;
