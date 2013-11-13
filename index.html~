@@ -21,7 +21,7 @@
     }
 
     function redirectToPage(location, spreadsheetkey,ontology, minValue, maxValue) {
-	window.location.href("brainmap.html?location="  +location + "&ontology=" + ontology  +"&min=" + minValue +"&max=" + maxValue + "&spreadsheetkey=" + spreadsheetkey);
+	window.location.href = "brainmap.html?location="  +location + "&ontology=" + ontology  +"&min=" + minValue +"&max=" + maxValue + "&spreadsheetkey=" + spreadsheetkey;
     }
 
      function generateHeatmap()
@@ -68,7 +68,7 @@
         <h3>
 <a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a> Create custom brain heatmaps</h3>
 
-<p>Use this page to generate brain heatmaps ontop of the <a href="http://www.brain-map.org/" > Allen Brain  </a> Atlas. Using this page you can generate images for the human brain (such as <a href= >this </a>) or for the mouse brain (such as <a href="brainmap.html?location=18&ontology=mouse&spreadsheetkey=0AiPUAyOtb4cHdGlldzdIdnd3d0Z5c1Z4TF9nMVJ1TWc&min=0&max=60" > this</a>).</p>
+<p>Use this page to generate brain heatmaps ontop of the <a href="http://www.brain-map.org/" > Allen Brain  </a> Atlas. Using this page you can generate images for the human brain (such as <a href="http://liorkirsch.github.io/brain-heatmap/brainmap.html?location=36&ontology=human&min=5&max=9&spreadsheetkey=0AiPUAyOtb4cHdHo2X2JSNHFqbnVtdDJLNHVyZG9fM0E" >this </a>) or for the mouse brain (such as <a href="brainmap.html?location=18&ontology=mouse&spreadsheetkey=0AiPUAyOtb4cHdGlldzdIdnd3d0Z5c1Z4TF9nMVJ1TWc&min=0&max=60" > this</a>).</p>
 <p>
 <img src="images/humanBrain2.png" > <img src="images/mouseBrain2.png" >
 </p>
@@ -85,8 +85,8 @@ File -> make a copy
  </li>
 
 <li> For each brain region that interest you provide a numeric value. It is possible to remove the unused regions (rows).
-The region names follow the ontology used in the <a href="http://atlas.brain-map.org/atlas?atlas=2" > Allen Mouse Reference Atlas </a> and in the <a href="http://atlas.brain-map.org/atlas?atlas=138322605#atlas=138322605" > Human Brain Reference Atlas </a>.
-The end result should be something like <a href="https://docs.google.com/spreadsheet/pub?key=0AiPUAyOtb4cHdGlldzdIdnd3d0Z5c1Z4TF9nMVJ1TWc&output=html" target=newtab> this </a>.
+The region names follow the ontology used in the <a href="http://atlas.brain-map.org/atlas?atlas=2" > Allen Mouse Reference Atlas </a> and in the <a href="http://atlas.brain-map.org/atlas?atlas=138322605#atlas=138322605" > Human Brain Reference Atlas </a>.<br>
+Here is an example of spreadsheet <a href="https://docs.google.com/spreadsheet/pub?key=0AiPUAyOtb4cHdGlldzdIdnd3d0Z5c1Z4TF9nMVJ1TWc&output=html" target=newtab> for the mouse </a> and <a href="https://docs.google.com/spreadsheet/pub?key=0AiPUAyOtb4cHdHo2X2JSNHFqbnVtdDJLNHVyZG9fM0E&output=html" target=newtab> for the human</a>.
 </li>
 
 <li>
@@ -117,6 +117,15 @@ File -> publish to the web -> start publishing
 
 <p> 
 </p>
+
+<h3>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h3>
+<p><ul>
+
+<li>
+The expression level of the gene <a href="http://liorkirsch.github.io/brain-heatmap/brainmap.html?location=36&ontology=human&min=5&max=9&spreadsheetkey=0AiPUAyOtb4cHdHo2X2JSNHFqbnVtdDJLNHVyZG9fM0E" > HTR1B in the adult human brain </a>   (the <a href="https://docs.google.com/spreadsheet/pub?key=0AiPUAyOtb4cHdHo2X2JSNHFqbnVtdDJLNHVyZG9fM0E&output=html" > spreadsheet </a> used).
+</li>
+</ul></p>
 
 <h3>
 <a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Special thanks</h3>
