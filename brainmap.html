@@ -32,8 +32,8 @@
 
 	var redirectionNeeded = false;
 	if ( "null" == location)       { redirectionNeeded = true; location = "20"; 	}
-	if ( "null" == spreadsheetkey) { redirectionNeeded = true; spreadsheetkey = "0AiPUAyOtb4cHdFN5d2VrMC15VTdHakl3VkNleWNacXc";	}
-	if ( "null" == ontology)       { redirectionNeeded = true; ontology = "mouse";	}
+	if ( "null" == spreadsheetkey) { redirectionNeeded = true; spreadsheetkey = "";	}
+	if ( "null" == ontology)       { redirectionNeeded = true; ontology = "human";	}
 	if ( redirectionNeeded ) { redirectToPage(location, spreadsheetkey, ontology,minValue, maxValue);} 
 
 	$("#currentLocation").val(location);
@@ -56,25 +56,27 @@
 			var docNode = document.adoptNode(svgNode[0]);
 			var pageNode = $("#page_div");
 			pageNode.html(docNode);
+
+			ontologyFile = "ontology/" + ontology + ".json";
+		 	$.getJSON(ontologyFile, function(ontologyData) {		
+				//getStructureColor(ontologyData, {}, default_color);
+
+				$.getJSON("http://cors.io/spreadsheets.google.com/feeds/list/" + spreadsheetkey + "/od6/public/values?alt=json", function(data) {
+
+				  var valuesAndMinMax = getValuesAndMinMax(data);
+				  if ( "null" != minValue ) { valuesAndMinMax.minValue = minValue ; }
+				  if ( "null" != maxValue ) { valuesAndMinMax.maxValue = maxValue ; }
+				  $("#colorbar_div").html( drawColorbar(20, 200, heatcolormap, valuesAndMinMax.minValue , valuesAndMinMax.maxValue) ) ;
+				  var colorDict = translateNumberToColor(valuesAndMinMax.valuesDict, valuesAndMinMax.minValue,valuesAndMinMax.maxValue,colormap);
+				  getStructureColor(ontologyData, colorDict, default_color);
+				  $('#loader').hide();
+				  encode_as_img_and_link(atlasData);
+				});
+		
+		  	});
 		    },'xml');
 		
-		ontologyFile = "ontology/" + ontology + ".json";
-		 $.getJSON(ontologyFile, function(ontologyData) {		
-			//getStructureColor(ontologyData, {}, default_color);
-
-			$.getJSON("http://cors.io/spreadsheets.google.com/feeds/list/" + spreadsheetkey + "/od6/public/values?alt=json", function(data) {
-
-			  var valuesAndMinMax = getValuesAndMinMax(data);
-			  if ( "null" != minValue ) { valuesAndMinMax.minValue = minValue ; }
-			  if ( "null" != maxValue ) { valuesAndMinMax.maxValue = maxValue ; }
-			  $("#colorbar_div").html( drawColorbar(20, 200, heatcolormap, valuesAndMinMax.minValue , valuesAndMinMax.maxValue) ) ;
-			  var colorDict = translateNumberToColor(valuesAndMinMax.valuesDict, valuesAndMinMax.minValue,valuesAndMinMax.maxValue,colormap);
-			  getStructureColor(ontologyData, colorDict, default_color);
-			  $('#loader').hide();
-			  encode_as_img_and_link(atlasData);
-			});
 		
-		  });
       });		
     })	;
 </script>
