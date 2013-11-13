@@ -21,7 +21,7 @@
     }
 
     function redirectToPage(location, spreadsheetkey,ontology, minValue, maxValue) {
-	window.location.replace("brainmap.html?location="  +location + "&ontology=" + ontology  +"&min=" + minValue +"&max=" + maxValue + "&spreadsheetkey=" + spreadsheetkey);
+	window.location.href = "brainmap.html?location="  +location + "&ontology=" + ontology  +"&min=" + minValue +"&max=" + maxValue + "&spreadsheetkey=" + spreadsheetkey;
     }
 
      function generateHeatmap()

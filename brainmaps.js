@@ -148,7 +148,7 @@
 		}
 
 		function redirectToPage(location, spreadsheetkey,ontology, minValue, maxValue) {
-			window.location.replace("?location="  +location + "&ontology=" + ontology + "&spreadsheetkey=" + spreadsheetkey +"&min=" + minValue +"&max=" + maxValue);
+			window.location.href = "?location="  +location + "&ontology=" + ontology +"&min=" + minValue +"&max=" + maxValue + "&spreadsheetkey=" + spreadsheetkey ;
 		}
 
 		function encode_as_img_and_link(atlasData){
