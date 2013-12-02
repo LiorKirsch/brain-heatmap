@@ -26,11 +26,11 @@
 						$.getJSON("http://cors.io/spreadsheets.google.com/feeds/list/" + spreadsheetkey + "/od6/public/values?alt=json", function(data) {
 
 						  var valuesAndMinMax = getValuesAndMinMax(data);
-						  drawStuff(valuesAndMinMax,minValue,maxValue,colormap,ontologyData,atlasData)		  
+						  drawStuff(valuesAndMinMax,minValue,maxValue,colormap,default_color,ontologyData,atlasData) 		  
 						});
 					}
 					else {
-						drawStuff(regionData,minValue,maxValue,colormap,ontologyData,atlasData)
+						drawStuff(regionData,minValue,maxValue,colormap,default_color,ontologyData,atlasData) 
 					}
 			  	});
 			    },'xml');
@@ -39,7 +39,7 @@
 	      		});
 		}
 
-		function drawStuff(valuesAndMinMax,minValue,maxValue,colormap,ontologyData,atlasData) {
+		function drawStuff(valuesAndMinMax,minValue,maxValue,colormap,default_color,ontologyData,atlasData) {
 		   if ( "null" != minValue ) { valuesAndMinMax.minValue = minValue ; }
 		   if ( "null" != maxValue ) { valuesAndMinMax.maxValue = maxValue ; }
 		   $("#colorbar_div").html( drawColorbar(20, 200, colormap, valuesAndMinMax.minValue , valuesAndMinMax.maxValue) ) ;
