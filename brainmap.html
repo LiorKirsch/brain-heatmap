@@ -47,45 +47,9 @@
 	$("#currentLocation").val(location);
 
 	var atlasFile="atlas.json";
-    $.getJSON(atlasFile, function(atlasesData) {
-		var atlasData ;
-		for (var i=0; i< atlasesData.length; i++  ) 
-			{ 
-				if (atlasesData[i]["atlas"] == ontology) { atlasData = atlasesData[i]; }
-		    }
 
-		var numberOfImages = atlasData["images"].length;
-		$('#totalImageCount').html('/ ' + numberOfImages);
-
-		var fileName = atlasData["directory"] + "/" + location + ".svg";
-		$.get(fileName, null, function(data){
-			var svgNode = $("svg", data);
-			svgNode.attr('id', "svgDrawing");
-			var docNode = document.adoptNode(svgNode[0]);
-			var pageNode = $("#page_div");
-			pageNode.html(docNode);
-
-			ontologyFile = "ontology/" + ontology + ".json";
-		 	$.getJSON(ontologyFile, function(ontologyData) {		
-				//getStructureColor(ontologyData, {}, default_color);
-
-				$.getJSON("http://cors.io/spreadsheets.google.com/feeds/list/" + spreadsheetkey + "/od6/public/values?alt=json", function(data) {
-
-				  var valuesAndMinMax = getValuesAndMinMax(data);
-				  if ( "null" != minValue ) { valuesAndMinMax.minValue = minValue ; }
-				  if ( "null" != maxValue ) { valuesAndMinMax.maxValue = maxValue ; }
-				  $("#colorbar_div").html( drawColorbar(20, 200, heatcolormap, valuesAndMinMax.minValue , valuesAndMinMax.maxValue) ) ;
-				  var colorDict = translateNumberToColor(valuesAndMinMax.valuesDict, valuesAndMinMax.minValue,valuesAndMinMax.maxValue,colormap);
-				  getStructureColor(ontologyData, colorDict, default_color);
-				  $('#loader').hide();
-				  encode_as_img_and_link(atlasData);
-				});
-		
-		  	});
-		    },'xml');
-		
-		
-      });		
+	createBrainHeatmaps(atlasFile,ontology,location,spreadsheetkey, minValue, maxValue, colormap, default_color);
+    		
     })	;
 </script>
 </body>
