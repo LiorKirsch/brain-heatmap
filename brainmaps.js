@@ -1,4 +1,4 @@
-		function createBrainHeatmaps(atlasFile,ontology,location,spreadsheetkey, minValue, maxValue, colormap, default_color) {
+		function createBrainHeatmaps(atlasFile,ontology,regionData, location,spreadsheetkey, minValue, maxValue, colormap, default_color) {
 
 			$.getJSON(atlasFile, function(atlasesData) {
 			var atlasData ;
@@ -22,18 +22,16 @@
 			 	$.getJSON(ontologyFile, function(ontologyData) {		
 					//getStructureColor(ontologyData, {}, default_color);
 
-					$.getJSON("http://cors.io/spreadsheets.google.com/feeds/list/" + spreadsheetkey + "/od6/public/values?alt=json", function(data) {
+					if ( "null" == regionData ) {
+						$.getJSON("http://cors.io/spreadsheets.google.com/feeds/list/" + spreadsheetkey + "/od6/public/values?alt=json", function(data) {
 
-					  var valuesAndMinMax = getValuesAndMinMax(data);
-					  if ( "null" != minValue ) { valuesAndMinMax.minValue = minValue ; }
-					  if ( "null" != maxValue ) { valuesAndMinMax.maxValue = maxValue ; }
-					  $("#colorbar_div").html( drawColorbar(20, 200, colormap, valuesAndMinMax.minValue , valuesAndMinMax.maxValue) ) ;
-					  var colorDict = translateNumberToColor(valuesAndMinMax.valuesDict, valuesAndMinMax.minValue,valuesAndMinMax.maxValue,colormap);
-					  getStructureColor(ontologyData, colorDict, default_color);
-					  $('#loader').hide();
-					  encode_as_img_and_link(atlasData);
-					});
-		
+						  var valuesAndMinMax = getValuesAndMinMax(data);
+						  drawStuff(valuesAndMinMax,minValue,maxValue,colormap,ontologyData,atlasData)		  
+						});
+					}
+					else {
+						drawStuff(regionData,minValue,maxValue,colormap,ontologyData,atlasData)
+					}
 			  	});
 			    },'xml');
 		
@@ -41,6 +39,15 @@
 	      		});
 		}
 
+		function drawStuff(valuesAndMinMax,minValue,maxValue,colormap,ontologyData,atlasData) {
+		   if ( "null" != minValue ) { valuesAndMinMax.minValue = minValue ; }
+		   if ( "null" != maxValue ) { valuesAndMinMax.maxValue = maxValue ; }
+		   $("#colorbar_div").html( drawColorbar(20, 200, colormap, valuesAndMinMax.minValue , valuesAndMinMax.maxValue) ) ;
+		   var colorDict = translateNumberToColor(valuesAndMinMax.valuesDict, valuesAndMinMax.minValue,valuesAndMinMax.maxValue,colormap);
+		   getStructureColor(ontologyData, colorDict, default_color);
+		   $('#loader').hide();
+		   encode_as_img_and_link(atlasData);
+		}
 		function getURLParameter(name) {
 		    return decodeURI(
 			(RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]

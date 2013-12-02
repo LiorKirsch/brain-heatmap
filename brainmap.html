@@ -47,8 +47,8 @@
 	$("#currentLocation").val(location);
 
 	var atlasFile="atlas.json";
-
-	createBrainHeatmaps(atlasFile,ontology,location,spreadsheetkey, minValue, maxValue, colormap, default_color);
+	var regionData="null";
+	createBrainHeatmaps(atlasFile,ontology,regionData,location,spreadsheetkey, minValue, maxValue, colormap, default_color);
     		
     })	;
 </script>
