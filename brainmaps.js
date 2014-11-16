@@ -1,50 +1,52 @@
 		function createBrainHeatmaps(atlasFile,ontology,regionData, location,spreadsheetkey, minValue, maxValue, colormap, default_color) {
 
 			$.getJSON(atlasFile, function(atlasesData) {
-			var atlasData ;
-			for (var i=0; i< atlasesData.length; i++  ) 
-				{ 
-					if (atlasesData[i]["atlas"] == ontology) { atlasData = atlasesData[i]; }
-			    }
+                var atlasData ;
+                for (var i=0; i< atlasesData.length; i++  ) 
+                    { 
+                        if (atlasesData[i]["atlas"] == ontology) { atlasData = atlasesData[i]; }
+                    }
 
-			var numberOfImages = atlasData["images"].length;
-			$('#totalImageCount').html('/ ' + numberOfImages);
+                var numberOfImages = atlasData["images"].length;
+                $('#totalImageCount').html('/ ' + numberOfImages);
 
-			var fileName = atlasData["directory"] + "/" + location + ".svg";
-			$.get(fileName, null, function(data){
-				var svgNode = $("svg", data);
-				svgNode.attr('id', "svgDrawing");
-				var docNode = document.adoptNode(svgNode[0]);
-				var pageNode = $("#page_div");
-				pageNode.html(docNode);
+                var fileName = atlasData["directory"] + "/" + location + ".svg";
+                $.get(fileName, null, function(data){
+                    
+                    var svgNodeSource = $("svg", data);
+                    svgNodeSource.attr('id', "svgDrawingSource").css({'width':'50%', 'height':'50%'});
+                    var docNodeSource = svgNodeSource[0];
+                    $("#page_div").append(svgNodeSource);
 
-				ontologyFile = "ontology/" + ontology + ".json";
-			 	$.getJSON(ontologyFile, function(ontologyData) {		
-					//getStructureColor(ontologyData, {}, default_color);
+                    ontologyFile = "ontology/" + ontology + ".json";
+                    $.getJSON(ontologyFile, function(ontologyData) {		
+                           drawStuff(regionData,minValue,maxValue,colormap,default_color,ontologyData,atlasData, docNodeSource) ;
+                    },'xml');
 
-					if ( "null" == regionData ) {
-						$.getJSON("http://cors.io/spreadsheets.google.com/feeds/list/" + spreadsheetkey + "/od6/public/values?alt=json", function(data) {
+                    });
+                
+                $.get(fileName, null, function(data){
 
-						     var valuesAndMinMax = getValuesAndMinMax(data);
-						     drawStuff(valuesAndMinMax,minValue,maxValue,colormap,default_color,ontologyData,atlasData);
-						});
-					}
-					else {
-						drawStuff(regionData,minValue,maxValue,colormap,default_color,ontologyData,atlasData) ;
-					}
-			  	});
-			    },'xml');
-		
-		
-	      		});
-		}
+                    var svgNodeDestination = $("svg", data);
+                    svgNodeDestination.attr('id', "svgDrawingDestination").css({'width':'50%', 'height':'50%'});
+                    var docNodeDestination = svgNodeDestination[0];
+                    $("#page_div").append(svgNodeDestination);
 
-		function drawStuff(valuesAndMinMax,minValue,maxValue,colormap,default_color,ontologyData,atlasData) {
+                    ontologyFile = "ontology/" + ontology + ".json";
+                    $.getJSON(ontologyFile, function(ontologyData) {		
+                           drawStuff(regionData,minValue,maxValue,colormap,default_color,ontologyData,atlasData, docNodeDestination) ;
+                    },'xml');
+
+                    });
+            });
+        }
+
+		function drawStuff(valuesAndMinMax,minValue,maxValue,colormap,default_color,ontologyData,atlasData,svgNode) {
 		   if ( "null" != minValue ) { valuesAndMinMax.minValue = minValue ; }
 		   if ( "null" != maxValue ) { valuesAndMinMax.maxValue = maxValue ; }
 		   $("#colorbar_div").html( drawColorbar(20, 200, colormap, valuesAndMinMax.minValue , valuesAndMinMax.maxValue) ) ;
 		   var colorDict = translateNumberToColor(valuesAndMinMax.valuesDict, valuesAndMinMax.minValue,valuesAndMinMax.maxValue,colormap);
-		   getStructureColor(ontologyData, colorDict, default_color);
+		   getStructureColor(ontologyData, colorDict, default_color,svgNode);
 		   $('#loader').hide();
 		   encode_as_img_and_link(atlasData);
 		}
@@ -54,9 +56,10 @@
 		    );
 		}
 
-		function setColor(structure_id, color,showOutline)
+		function setColor(structure_id, color,showOutline,svgNode)
 		{
-			var	svgContainer = document.getElementById("svgDrawing");
+			//var	svgContainer = document.getElementById("svgDrawing");
+            var	svgContainer = svgNode;
 			var svgElement = getElementByAttribute('structure_id',structure_id,svgContainer);
 			if (!(svgElement == null)) {
 				svgElement.style.fill = color; 
@@ -64,7 +67,7 @@
 			}
 		}
 
-		function getStructureColor(data,valuesDict, default_color)
+		function getStructureColor(data,valuesDict, default_color, svgNode)
 		{// this function iterates over the regions in the data. For each region it checks if it has a value if not it takes the value from its parent
 
 			var currentStructID,parentStructID,currentValue,parentValue;
@@ -86,7 +89,7 @@
 					  if ( !(default_color == parentValue)) {showOutline = false;}
 				      }
 				   }
-				setColor(currentStructID, valuesDict[currentStructID] ,showOutline);
+				setColor(currentStructID, valuesDict[currentStructID] ,showOutline, svgNode);
 			}
 		}
 
