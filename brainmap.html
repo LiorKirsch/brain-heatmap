@@ -53,7 +53,9 @@
                        'maxValue' : 250
                        };
     var source_brain_div = $("#source_div").brainmap( { location : location,  ontology : ontology, default_color:default_color} );
-    source_brain_div.createBrainHeatmaps(atlasFile,regionData, minValue, maxValue, colormap);
+//    source_brain_div.createBrainHeatmaps(atlasFile,regionData, minValue, maxValue, colormap);
+    source_brain_div.createBrainHeatmaps(regionData);
+
     source_brain_div.css({'width':'40%', 'height':'40%'});
     
     var regionData = { 'valuesDict' : {10156:24, 10157:12,10506:23,11580:32,11581:34,11587:12,11582:42,11585:101,11586:12,11583:1,11584:12}, 
@@ -61,7 +63,8 @@
                        'maxValue' : 101
                        }; 
     var dest_brain_div = $("#dest_div").brainmap( { location : location,  ontology : ontology, default_color:default_color} );
-    dest_brain_div.createBrainHeatmaps(atlasFile,regionData, minValue, maxValue, colormap);
+    //dest_brain_div.createBrainHeatmaps(atlasFile,regionData, minValue, maxValue, colormap);
+    dest_brain_div.createBrainHeatmaps(regionData);
     dest_brain_div.css({'width':'40%', 'height':'40%'}); 
 //    dest_brain_div.createColorBar($("#colorbar_div"), 20, 200, colormap  ) 
     dest_brain_div.createColorBar($("#colorbar_div"), {'width':20, 'height':200, 'colormap':colormap}  ) 
