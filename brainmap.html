@@ -63,7 +63,9 @@
     var dest_brain_div = $("#dest_div").brainmap( { location : location,  ontology : ontology, default_color:default_color} );
     dest_brain_div.createBrainHeatmaps(atlasFile,regionData, minValue, maxValue, colormap);
     dest_brain_div.css({'width':'40%', 'height':'40%'}); 
-    dest_brain_div.createColorBar($("#colorbar_div"), 20, 200, colormap  ) 
+//    dest_brain_div.createColorBar($("#colorbar_div"), 20, 200, colormap  ) 
+    dest_brain_div.createColorBar($("#colorbar_div"), {'width':20, 'height':200, 'colormap':colormap}  ) 
+
     
      
 //    var fileName = 'samp.json';
